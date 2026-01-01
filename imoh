@@ -1,0 +1,88 @@
+openapi: 3.0.3
+info:
+  title: Majesty App API
+  version: 1.0.0
+servers:
+  - url: https://api.yourdomain.com
+
+paths:
+  /auth/login:
+    post:
+      summary: User login
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email: { type: string }
+                password: { type: string }
+      responses:
+        '200':
+          description: Login success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  token: { type: string }
+                  refreshToken: { type: string }
+
+  /feed:
+    get:
+      summary: Fetch feed items
+      parameters:
+        - in: query
+          name: page
+          schema: { type: integer }
+      responses:
+        '200':
+          description: Feed list
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id: { type: string }
+                    title: { type: string }
+                    mediaURL: { type: string, format: uri }
+                    type: { type: string }
+
+  /feed/like:
+    post:
+      summary: Like a feed item
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id: { type: string }
+      responses:
+        '200': { description: OK }
+
+  /marketplace/vendors/search:
+    get:
+      summary: Search vendors
+      parameters:
+        - in: query
+          name: q
+          schema: { type: string }
+      responses:
+        '200':
+          description: Vendor list
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id: { type: string }
+                    name: { type: string }
+                    category: { type: string }
+                    description: { type: string }
